@@ -5,6 +5,32 @@ namespace App\Http\Controllers;
 use App\Models\Device;
 use http\Client\Request;
 
+/**
+ * @OA\Post(
+ *     path="/chat",
+ *     tags={"Chat"},
+ *     summary="Send message to ChatGPT",
+ *     security={{"sanctum": {}}},
+ *     @OA\RequestBody(
+ *         required=true,
+ *         @OA\JsonContent(
+ *             @OA\Property(property="chat_id", type="string", example="chat_123"),
+ *             @OA\Property(property="message", type="string", example="Hello, ChatGPT!")
+ *         )
+ *     ),
+ *     @OA\Response(
+ *         response=200,
+ *         description="Chat message sent",
+ *         @OA\JsonContent(
+ *             @OA\Property(property="chat_id", type="string", example="chat_123"),
+ *             @OA\Property(property="response", type="string", example="This is a response from ChatGPT")
+ *         )
+ *     ),
+ *     @OA\Response(response=403, description="Insufficient chat credits"),
+ *     @OA\Response(response=422, description="Invalid data")
+ * )
+ */
+
 class ChatController extends Controller
 {
     public function chat(Request $request)

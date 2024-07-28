@@ -28,7 +28,7 @@ class Kernel extends HttpKernel
         ],
 
         'api' => [
-            // ...
+            'throttle:api',
         ],
     ];
 
@@ -40,6 +40,6 @@ class Kernel extends HttpKernel
      * @var array
      */
     protected $routeMiddleware = [
-        'admin' => \App\Http\Middleware\AdminMiddleware::class,
+        'encrypt.response' => \App\Http\Middleware\EncryptResponse::class,
     ];
 }

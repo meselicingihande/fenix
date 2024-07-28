@@ -1,0 +1,259 @@
+{
+    "openapi": "3.0.0",
+    "info": {
+        "title": "Fenix API",
+        "version": "0.1"
+    },
+    "paths": {
+        "/admin/subscriptions": {
+            "get": {
+                "tags": [
+                    "Admin"
+                ],
+                "summary": "Get subscription transactions",
+                "operationId": "6dedcc1980cb3f93833a089102919065",
+                "responses": {
+                    "200": {
+                        "description": "List of subscription transactions",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "array",
+                                    "items": {
+                                        "properties": {
+                                            "id": {
+                                                "type": "integer",
+                                                "example": 1
+                                            },
+                                            "device_id": {
+                                                "type": "integer",
+                                                "example": 1
+                                            },
+                                            "product_id": {
+                                                "type": "string",
+                                                "example": "prod_123"
+                                            },
+                                            "receipt_token": {
+                                                "type": "string",
+                                                "example": "some-long-receipt-token"
+                                            },
+                                            "created_at": {
+                                                "type": "string",
+                                                "example": "2023-01-01 00:00:00"
+                                            },
+                                            "updated_at": {
+                                                "type": "string",
+                                                "example": "2023-01-01 00:00:00"
+                                            }
+                                        },
+                                        "type": "object"
+                                    }
+                                }
+                            }
+                        }
+                    }
+                },
+                "security": [
+                    {
+                        "sanctum": []
+                    }
+                ]
+            }
+        },
+        "/auth": {
+            "post": {
+                "tags": [
+                    "Authentication"
+                ],
+                "summary": "Register or authenticate device",
+                "operationId": "955bbb44a062ecc3b4d579a77b045352",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "properties": {
+                                    "device_uuid": {
+                                        "type": "string",
+                                        "example": "123e4567-e89b-12d3-a456-426614174000"
+                                    },
+                                    "device_name": {
+                                        "type": "string",
+                                        "example": "User's Device"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Device authenticated",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "is_premium": {
+                                            "type": "boolean",
+                                            "example": true
+                                        },
+                                        "chat_credits": {
+                                            "type": "integer",
+                                            "example": 100
+                                        },
+                                        "chat_history": {
+                                            "type": "array",
+                                            "items": {
+                                                "type": "object"
+                                            }
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "422": {
+                        "description": "Invalid data"
+                    }
+                }
+            }
+        },
+        "/chat": {
+            "post": {
+                "tags": [
+                    "Chat"
+                ],
+                "summary": "Send message to ChatGPT",
+                "operationId": "8ae683ae1f52a9b6859bc8d2826a1857",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "properties": {
+                                    "chat_id": {
+                                        "type": "string",
+                                        "example": "chat_123"
+                                    },
+                                    "message": {
+                                        "type": "string",
+                                        "example": "Hello, ChatGPT!"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Chat message sent",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "chat_id": {
+                                            "type": "string",
+                                            "example": "chat_123"
+                                        },
+                                        "response": {
+                                            "type": "string",
+                                            "example": "This is a response from ChatGPT"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "403": {
+                        "description": "Insufficient chat credits"
+                    },
+                    "422": {
+                        "description": "Invalid data"
+                    }
+                },
+                "security": [
+                    {
+                        "sanctum": []
+                    }
+                ]
+            }
+        },
+        "/subscription": {
+            "post": {
+                "tags": [
+                    "Subscription"
+                ],
+                "summary": "Subscribe device to premium",
+                "operationId": "25f2607a0cc3deedf04ef14d70957b39",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "properties": {
+                                    "product_id": {
+                                        "type": "string",
+                                        "example": "prod_123"
+                                    },
+                                    "receipt_token": {
+                                        "type": "string",
+                                        "example": "some-long-receipt-token"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Subscription successful",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "status": {
+                                            "type": "string",
+                                            "example": "success"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "422": {
+                        "description": "Invalid data"
+                    }
+                },
+                "security": [
+                    {
+                        "sanctum": []
+                    }
+                ]
+            }
+        }
+    },
+    "tags": [
+        {
+            "name": "Admin",
+            "description": "Admin"
+        },
+        {
+            "name": "Authentication",
+            "description": "Authentication"
+        },
+        {
+            "name": "Chat",
+            "description": "Chat"
+        },
+        {
+            "name": "Subscription",
+            "description": "Subscription"
+        }
+    ]
+}
